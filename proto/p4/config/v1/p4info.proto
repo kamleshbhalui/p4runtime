@@ -36,6 +36,7 @@ message P4Info {
   repeated ValueSet value_sets = 10;
   repeated Register registers = 11;
   repeated Digest digests = 12;
+  repeated MatchValueLookupTable emvlts = 13;
   repeated Extern externs = 100;
   P4TypeInfo type_info = 200;
 }
@@ -103,6 +104,8 @@ message P4Ids {
     DIRECT_METER = 0x15;
     REGISTER = 0x16;
     DIGEST = 0x17;
+    EXACT_MATCH_VALUE_LOOKUP_TABLE = 0x18;
+
 
     // externs for other architectures (vendor extensions)
     OTHER_EXTERNS_START = 0x80;
@@ -347,6 +350,18 @@ message DirectMeter {
   MeterSpec spec = 2;
   // the id of the table to which the meter is attached
   uint32 direct_table_id = 3;
+}
+
+message MatchValueLookupTable {
+  Preamble preamble = 1;
+  repeated MatchField match_fields = 2;
+  message Param {
+    uint32 id = 1;
+    string name = 2;
+    uint32 bitwidth = 3;
+  }
+  repeated Param params = 3;
+  uint32 size = 4;
 }
 
 // Any metadata associated with controller Packet-IO (Packet-In or Packet-Out)
